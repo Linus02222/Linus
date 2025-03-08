@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="No Pay No Gain">
+  <link rel="apple-touch-icon" href="https://via.placeholder.com/180x180.png?text=Game+Icon">
+  <title>No Pay No Gain</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background-color: #f0f8ff;
+      color: #333;
+      text-align: center;
+      padding: 2vw;
+      margin: 0;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -webkit-user-select: none; /* Disable text selection on iOS */
+      touch-action: manipulation; /* Prevent double-tap zooming */
+    }
+
+    h1 {
+      font-size: clamp(1.5rem, 5vw, 2rem);
+      margin-bottom: 3vw;
+    }
+
+    h2 {
+      font-size: clamp(1.2rem, 4vw, 1.5rem);
+      margin: 3vw 0;
+    }
+
+    .money, .dice-display, .timer {
+      font-size: clamp(1rem, 4vw, 1.5rem);
+      margin-bottom: 2vw;
+    }
+
+    .dice-display { color: #007bff; }
+    .timer { color: #dc3545; }
+
+    .game-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 3vw;
+      justify-content: center;
+    }
+
+    .card {
+      border: 2px solid #333;
+      border-radius: 10px;
+      padding: 3vw;
+      background-color: #fff;
+    }
+
+    .card h3 { 
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      margin: 2vw 0; 
+    }
+
+    .card .info { 
+      font-size: clamp(0.8rem, 3vw, 1rem); 
+      margin: 1.5vw 0; 
+    }
+
+    .round-section {
+      margin: 4vw 0;
+      padding: 2vw;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: #fff;
+    }
+
+    .summary {
+      grid-column: span 2;
+      text-align: left;
+      margin-top: 3vw;
+    }
+
+    .summary table {
+      width: 100%;
+      margin: auto;
+      border-collapse: collapse;
+      font-size: clamp(0.8rem, 3vw, 1rem);
+    }
+
+    .summary table, .summary th, .summary td {
+      border: 1px solid #333;
+      padding: 2vw;
+    }
+
+    .summary th { background-color: #ddd; }
+
+    .instructions {
+      font-size: clamp(0.9rem, 3.5vw, 1.2rem);
+      margin: 3vw 0;
+      text-align: left;
+    }
+
+    .game-over { color: #dc3545; font-weight: bold; }
+    .winner { color: #28a745; font-weight: bold; }
+
+    /* Media Query for iPhone and iPad */
+    @media (max-width: 768px) {
+      .game-container {
+        grid-template-columns: 1fr;
+      }
+
+      .summary {
+        grid-column: span 1;
+      }
+    }
+
+    /* Fix for iOS Safari */
+    @supports (-webkit-overflow-scrolling: touch) {
+      body {
+        height: 100vh;
+        overflow-y: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="game-page">
+    <h1>🎲 No Pay No Gain 🎲</h1>
+    <div class="money">💰 Starting Money: $100</div>
+    <div class="dice-display">🎲 Dice Roll: 2-12 (2d6)</div>
+
+    <div class="instructions">
+      <h2>How to Play</h2>
+      <p>This is a static version of "No Pay No Gain" for iOS users without JavaScript. The full game involves selecting investments, rolling dice, and managing money across three rounds. Below are the rules and options for each round. In the interactive version, you'd:</p>
+      <ul>
+        <li>Select up to a maximum number of investments per round</li>
+        <li>Pay the cost of each investment</li>
+        <li>Roll two dice (2-12)</li>
+        <li>Earn profit if the roll meets or exceeds the dice requirement, plus interest</li>
+        <li>Advance to the next round by reaching the target money</li>
+      </ul>
+    </div>
+
+    <!-- Round 1 -->
+    <div class="round-section">
+      <h2>First Round</h2>
+      <div class="timer">⏰ Time Limit: 15s</div>
+      <p>Max Choices: 2 | Target Money: $120</p>
+      <div class="game-container">
+        <div class="card">
+          <h3>Money Market Funds</h3>
+          <div class="info">🎲 Dice: 3+</div>
+          <div class="info">💰 Profit: +$35</div>
+          <div class="info">📈 Cost: -$25</div>
+          <div class="info">🤑 Interest: +$15</div>
+        </div>
+        <div class="card">
+          <h3>Certificates of Deposit</h3>
+          <div class="info">🎲 Dice: 5+</div>
+          <div class="info">💰 Profit: +$40</div>
+          <div class="info">📈 Cost: -$25</div>
+          <div class="info">🤑 Interest: +$20</div>
+        </div>
+        <div class="card">
+          <h3>Treasury Securities</h3>
+          <div class="info">🎲 Dice: 6+</div>
+          <div class="info">💰 Profit: +$50</div>
+          <div class="info">📈 Cost: -$40</div>
+          <div class="info">🤑 Interest: +$25</div>
+        </div>
+        <div class="card">
+          <h3>Bonds</h3>
+          <div class="info">🎲 Dice: 7+</div>
+          <div class="info">💰 Profit: +$60</div>
+          <div class="info">📈 Cost: -$55</div>
+          <div class="info">🤑 Interest: +$30</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Round 2 -->
+    <div class="round-section">
+      <h2>Second Round</h2>
+      <div class="timer">⏰ Time Limit: 30s</div>
+      <p>Max Choices: 3 | Target Money: $200</p>
+      <div class="game-container">
+        <div class="card">
+          <h3>Fixed Income Funds</h3>
+          <div class="info">🎲 Dice: 7+</div>
+          <div class="info">💰 Profit: +$70</div>
+          <div class="info">📈 Cost: -$30</div>
+          <div class="info">🤑 Interest: +$25</div>
+        </div>
+        <div class="card">
+          <h3>Mutual Funds</h3>
+          <div class="info">🎲 Dice: 6+</div>
+          <div class="info">💰 Profit: +$80</div>
+          <div class="info">📈 Cost: -$35</div>
+          <div class="info">🤑 Interest: +$20</div>
+        </div>
+        <div class="card">
+          <h3>Index Funds</h3>
+          <div class="info">🎲 Dice: 5+</div>
+          <div class="info">💰 Profit: +$80</div>
+          <div class="info">📈 Cost: -$50</div>
+          <div class="info">🤑 Interest: +$15</div>
+        </div>
+        <div class="card">
+          <h3>Exchange-Traded Funds</h3>
+          <div class="info">🎲 Dice: 4+</div>
+          <div class="info">💰 Profit: +$60</div>
+          <div class="info">📈 Cost: -$55</div>
+          <div class="info">🤑 Interest: +$30</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Round 3 -->
+    <div class="round-section">
+      <h2>Third Round</h2>
+      <div class="timer">⏰ Time Limit: 45s</div>
+      <p>Max Choices: 3 | Target Money: Maximize Earnings</p>
+      <div class="game-container">
+        <div class="card">
+          <h3>Short-Term Bond Funds</h3>
+          <div class="info">🎲 Dice: 5+</div>
+          <div class="info">💰 Profit: +$50</div>
+          <div class="info">📈 Cost: -$60</div>
+          <div class="info">🤑 Interest: +$30</div>
+        </div>
+        <div class="card">
+          <h3>High-Yield Bond Funds</h3>
+          <div class="info">🎲 Dice: 6+</div>
+          <div class="info">💰 Profit: +$70</div>
+          <div class="info">📈 Cost: -$70</div>
+          <div class="info">🤑 Interest: +$35</div>
+        </div>
+        <div class="card">
+          <h3>Sector Funds</h3>
+          <div class="info">🎲 Dice: 8+</div>
+          <div class="info">💰 Profit: +$250</div>
+          <div class="info">📈 Cost: -$130</div>
+          <div class="info">🤑 Interest: +$70</div>
+        </div>
+        <div class="card">
+          <h3>Crypto</h3>
+          <div class="info">🎲 Dice: 9+</div>
+          <div class="info">💰 Profit: +$350</div>
+          <div class="info">📈 Cost: -$130</div>
+          <div class="info">🤑 Interest: +$0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary">
+      <h2>Sample Summary</h2>
+      <p>(Example from a hypothetical game)</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Investment</th>
+            <th>Cost</th>
+            <th>Profit</th>
+            <th>Interest</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Money Market Funds</td>
+            <td>-$25</td>
+            <td>+$35</td>
+            <td>+$15</td>
+          </tr>
+          <tr>
+            <td>Certificates of Deposit</td>
+            <td>-$25</td>
+            <td>+$40</td>
+            <td>+$20</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
